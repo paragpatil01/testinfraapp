@@ -8,12 +8,11 @@ terraform {
 }
 
 provider "aws" {
-
   region     = "var.aws_region"
 }
 
 resource "aws_instance" "this" {
-  ami                     = "ami-0dcc1e21636832c5d"
+  ami                     = "ami-0287a05f0ef0e9d9a"
   instance_type           = "var.instance_type"
   key_name = "myawslogin"
   tags = {
@@ -21,3 +20,4 @@ resource "aws_instance" "this" {
   }
   
 }
+
