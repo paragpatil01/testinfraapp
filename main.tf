@@ -12,7 +12,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "demo" {
-  ami                     = "ami-0fc5d935ebf8bc3bc"
+  ami                     = "ami-0287a05f0ef0e9d9a"
   instance_type           =  var.instance_type
   key_name                = "awslogin"
   security_groups = [ "aws_security_group.TF_SG.name" ]
