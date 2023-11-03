@@ -15,7 +15,7 @@ resource "aws_instance" "demo" {
   ami                     = "ami-0287a05f0ef0e9d9a"
   instance_type           =  var.instance_type
   key_name                = "awslogin"
-  security_groups = [ "aws_security_group.TF_SG.name" ]
+  security_groups = [ aws_security_group.TF_SG.name ]
   tags                    = {
     name = "testinfra"
   }
