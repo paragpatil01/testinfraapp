@@ -81,11 +81,39 @@ resource "aws_lb_target_group_attachment" "test" {
   port             = 80
 }
 
+resource "aws_security_group" "elb" {
+  name        = "security group for elb terraform"
+  description = "security group for elb terraform"
+  vpc_id      = "vpc-04f8494e3a0202cbb"
+
+  ingress {
+    description      = "HTTP"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "elb"
+  }
+}
+
 resource "aws_lb" "test" {
   name               = "test-lb-tf"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [ "aws_security_group.TF_SG.name" ]
+  security_groups    = [ "aws_security_group.elb.name" ]
   subnets            = ["subnet-01c61efbc979db1a5","subnet-0574b864a53f1d4bf"]
 }
 
