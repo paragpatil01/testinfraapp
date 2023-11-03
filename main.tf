@@ -85,7 +85,7 @@ resource "aws_lb" "test" {
   name               = "test-lb-tf"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [ aws_security_group.TF_SG.name ]
+  security_groups    = [ "aws_security_group.TF_SG.name" ]
   subnets            = ["subnet-01c61efbc979db1a5","subnet-0574b864a53f1d4bf"]
 }
 
