@@ -22,14 +22,7 @@ resource "aws_instance" "demo" {
   
 }
 
-# resource "aws_s3_bucket" "example" {
-#   bucket = "my-tf-testinfra-bucket"
 
-#   tags   = {
-#     Name        = "My testinfra bucket"
-    
-#   }
-# }
 
 resource "aws_security_group" "TF_SG" {
   name        = "security group using terraform"
@@ -63,5 +56,47 @@ resource "aws_security_group" "TF_SG" {
 
   tags = {
     Name = "TF_SG"
+  }
+}
+
+resource "aws_lb_target_group" "front" {
+  name = "application-front"
+  port = 80
+  protocol = "HTTP"
+  vpc_id = "vpc-04f8494e3a0202cbb"
+  health_check {
+    healthy_threshold = 5
+    interval = 30
+    matcher = 200
+    path = "/index.html"
+    protocol = "HTTP"
+    timeout = 5
+    unhealthy_threshold = 2
+  }
+
+}
+resource "aws_lb_target_group_attachment" "test" {
+  target_group_arn = aws_lb_target_group.front.arn
+  target_id        = aws_instance.demo.id
+  port             = 80
+}
+
+resource "aws_lb" "test" {
+  name               = "test-lb-tf"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.lb_sg.id]
+  subnets            = ["subnet-01c61efbc979db1a5","subnet-0574b864a53f1d4bf"]
+}
+
+resource "aws_lb_listener" "front_end" {
+  load_balancer_arn = aws_lb.test.arn
+  port              = "80"
+  protocol          = "HTTP"
+  
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.front.arn
   }
 }
