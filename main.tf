@@ -22,15 +22,6 @@ resource "aws_instance" "demo" {
   
 }
 
-# resource "aws_s3_bucket" "example" {
-#   bucket = "my-tf-testinfra-bucket"
-
-#   tags   = {
-#     Name        = "My testinfra bucket"
-    
-#   }
-# }
-
 resource "aws_security_group" "TF_SG" {
   name        = "security group using terraform"
   description = "security group using terraform"
